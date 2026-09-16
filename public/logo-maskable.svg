@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5EEAD4"/>
+      <stop offset="100%" stop-color="#2DD4BF"/>
+    </linearGradient>
+  </defs>
+  <!-- full-bleed background required for maskable (no rounded corners, OS applies its own mask) -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+
+  <!-- M monogram scaled down + centered within the ~80% safe zone -->
+  <g fill="none" stroke="url(#mint)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M146 320 L146 190 L256 280 L366 190 L366 320"/>
+  </g>
+  <circle cx="146" cy="190" r="14" fill="#5EEAD4"/>
+  <circle cx="256" cy="280" r="16" fill="#F0FDFA"/>
+  <circle cx="366" cy="190" r="14" fill="#5EEAD4"/>
+  <circle cx="146" cy="320" r="10" fill="#2DD4BF" opacity="0.9"/>
+  <circle cx="366" cy="320" r="10" fill="#2DD4BF" opacity="0.9"/>
+</svg>
