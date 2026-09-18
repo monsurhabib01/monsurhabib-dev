@@ -118,7 +118,7 @@ function BrowserChrome({ url, live = true }: { url: string; live?: boolean }) {
       <span className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
       <span className="h-2.5 w-2.5 rounded-full bg-amber-500/70" />
       <span className="h-2.5 w-2.5 rounded-full bg-emerald-500/70" />
-      <span className="ml-3 text-xs font-medium text-slate-500">{url}</span>
+      <span className="ml-3 text-xs font-medium text-slate-400">{url}</span>
       {live && (
         <span className="ml-auto flex items-center gap-1.5 text-xs text-emerald-400">
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
@@ -179,12 +179,12 @@ function PWAInstallCard() {
             </span>
             <div className="flex flex-col">
               <span className="text-slate-200">{c.label}</span>
-              <span className="text-xs text-slate-500">{c.detail}</span>
+              <span className="text-xs text-slate-400">{c.detail}</span>
             </div>
           </div>
         ))}
         <div
-          className={`flex items-center gap-2 px-1 py-2 text-xs text-slate-500 transition-opacity duration-300 ${
+          className={`flex items-center gap-2 px-1 py-2 text-xs text-slate-400 transition-opacity duration-300 ${
             visibleCount < PWA_CHECKS.length ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -222,19 +222,19 @@ function FraudDashboardCard() {
       {/* stats row */}
       <div className="grid grid-cols-4 gap-px border-b border-slate-800 bg-slate-800/50">
         <div className="bg-slate-900/80 px-4 py-3">
-          <div className="text-xs text-slate-500">Scanned</div>
+          <div className="text-xs text-slate-400">Scanned</div>
           <div className="text-lg font-semibold text-slate-100">{visibleCount}</div>
         </div>
         <div className="bg-slate-900/80 px-4 py-3">
-          <div className="text-xs text-slate-500">Flagged</div>
+          <div className="text-xs text-slate-400">Flagged</div>
           <div className="text-lg font-semibold text-red-400">{flaggedCount}</div>
         </div>
         <div className="bg-slate-900/80 px-4 py-3">
-          <div className="text-xs text-slate-500">Avg. Latency</div>
+          <div className="text-xs text-slate-400">Avg. Latency</div>
           <div className="text-lg font-semibold text-emerald-400">82ms</div>
         </div>
         <div className="bg-slate-900/80 px-4 py-3">
-          <div className="text-xs text-slate-500">Est. Precision</div>
+          <div className="text-xs text-slate-400">Est. Precision</div>
           <div className="text-lg font-semibold text-sky-400">94%</div>
         </div>
       </div>
@@ -249,9 +249,9 @@ function FraudDashboardCard() {
             }`}
           >
             <div className="flex flex-col">
-              <span className="font-mono text-xs text-slate-500">{tx.id}</span>
+              <span className="font-mono text-xs text-slate-400">{tx.id}</span>
               <span className="text-slate-200">
-                {tx.amount} <span className="text-slate-500">· {tx.channel}</span>
+                {tx.amount} <span className="text-slate-400">· {tx.channel}</span>
               </span>
             </div>
             <span
@@ -264,7 +264,7 @@ function FraudDashboardCard() {
           </div>
         ))}
         <div
-          className={`flex items-center gap-2 px-1 py-2 text-xs text-slate-500 transition-opacity duration-300 ${
+          className={`flex items-center gap-2 px-1 py-2 text-xs text-slate-400 transition-opacity duration-300 ${
             visibleCount < TRANSACTIONS.length ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -273,7 +273,7 @@ function FraudDashboardCard() {
         </div>
       </div>
 
-      <div className="border-t border-slate-800 px-4 py-3 text-[11px] text-slate-500">
+      <div className="border-t border-slate-800 px-4 py-3 text-[11px] text-slate-400">
         Score &gt; 0.85 = high-risk (auto-flag) · 0.5–0.85 = manual review · &lt; 0.5 = safe
       </div>
 
@@ -304,7 +304,7 @@ function WorkflowStrip({ variant }: { variant: "pwa" | "fraud" }) {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
             </div>
-            <span className="text-[10px] text-slate-500">{n}</span>
+            <span className="text-[10px] text-slate-400">{n}</span>
           </div>
           {i < nodes.length - 1 && (
             <div className="mx-1 mb-4 h-px flex-1 bg-gradient-to-r from-emerald-500/40 to-slate-700" />
@@ -339,7 +339,7 @@ function ProjectCard({
         </span>
       </div>
       <p className="text-sm leading-relaxed text-slate-400">{desc}</p>
-      <div className="border-t border-slate-800 pt-3 font-mono text-xs text-slate-500">
+      <div className="border-t border-slate-800 pt-3 font-mono text-xs text-slate-400">
         {metric}
       </div>
       <div className="flex flex-wrap gap-2">
@@ -382,11 +382,259 @@ function ProofCard({
     <div
       className={`rounded-2xl border border-slate-800 bg-slate-900/60 p-5 ${className}`}
     >
-      <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
+      <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-400">
         {title}
       </div>
       {children}
     </div>
+  );
+}
+
+// ---- Live Lighthouse audit -------------------------------------------
+// Calls Google's public PageSpeed Insights API directly from the browser
+// (no server needed — works fine on a static export). No API key = a low
+// shared quota, which is plenty for a personal-portfolio visitor volume;
+// add ?key=YOUR_KEY to the endpoint below if it ever gets rate-limited.
+type LighthouseStatus = "idle" | "loading" | "success" | "error";
+
+function useLighthouseAudit() {
+  const [status, setStatus] = useState<LighthouseStatus>("idle");
+  const [scores, setScores] = useState<typeof METRICS | null>(null);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [ranAt, setRanAt] = useState<string | null>(null);
+
+  async function run() {
+    setStatus("loading");
+    setErrorMsg("");
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+    try {
+      const targetUrl = window.location.origin + "/";
+      const endpoint =
+        "https://www.googleapis.com/pagespeedonline/v5/runPagespeed" +
+        `?url=${encodeURIComponent(targetUrl)}` +
+        "&category=performance&category=accessibility&category=best-practices&category=seo" +
+        "&strategy=mobile";
+
+      const res = await fetch(endpoint, { signal: controller.signal });
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          throw new Error(
+            "Google's audit API is rate-limited right now — try again in a minute."
+          );
+        }
+        throw new Error("Audit request failed — try again shortly.");
+      }
+
+      const data = await res.json();
+      const cats = data?.lighthouseResult?.categories;
+      if (!cats) throw new Error("Unexpected response from the audit API.");
+
+      const toScore = (v: number | undefined) =>
+        typeof v === "number" ? Math.round(v * 100) : 0;
+
+      setScores([
+        { label: "Performance", value: toScore(cats.performance?.score) },
+        { label: "Accessibility", value: toScore(cats.accessibility?.score) },
+        {
+          label: "Best Practices",
+          value: toScore(cats["best-practices"]?.score),
+        },
+        { label: "SEO", value: toScore(cats.seo?.score) },
+      ]);
+      setRanAt(
+        new Date().toLocaleTimeString(undefined, {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      );
+      setStatus("success");
+    } catch (err) {
+      const aborted = err instanceof DOMException && err.name === "AbortError";
+      setErrorMsg(
+        aborted
+          ? "Audit timed out — Google's servers can be slow on mobile strategy. Try again."
+          : err instanceof Error
+          ? err.message
+          : "Something went wrong running the audit."
+      );
+      setStatus("error");
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  return { status, scores, errorMsg, ranAt, run };
+}
+
+function LighthouseCard() {
+  const { status, scores, errorMsg, ranAt, run } = useLighthouseAudit();
+  const display = scores ?? METRICS;
+
+  return (
+    <ProofCard title="Lighthouse Audit — This Site" className="md:col-span-2">
+      <div className="grid grid-cols-4 gap-3">
+        {display.map((m) => (
+          <div key={m.label} className="text-center">
+            <div className="text-2xl font-bold text-emerald-400">
+              {m.value}
+            </div>
+            <div className="mt-1 text-[10px] text-slate-400">{m.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 flex flex-col items-start gap-2 border-t border-slate-800 pt-3 sm:flex-row sm:items-center sm:justify-between">
+        <span
+          className={`text-[11px] ${
+            status === "error" ? "text-red-400" : "text-slate-500"
+          }`}
+        >
+          {status === "success"
+            ? `Live · Google PSI · ran at ${ranAt}`
+            : status === "error"
+            ? errorMsg
+            : "Static baseline (last manual run) — click to audit this page live"}
+        </span>
+        <button
+          onClick={run}
+          disabled={status === "loading"}
+          className="whitespace-nowrap rounded-lg bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-60"
+        >
+          {status === "loading"
+            ? "Auditing… (~20-30s)"
+            : status === "success"
+            ? "Re-run live audit →"
+            : "Run live audit →"}
+        </button>
+      </div>
+    </ProofCard>
+  );
+}
+
+// ---- Live Lighthouse audit -------------------------------------------
+// Calls Google's public PageSpeed Insights API directly from the browser
+// (no server needed — works fine on a static export). No API key = a low
+// shared quota, which is plenty for a personal-portfolio visitor volume;
+// add &key=YOUR_KEY to the endpoint below if it ever gets rate-limited.
+type LighthouseStatus = "idle" | "loading" | "success" | "error";
+
+function useLighthouseAudit() {
+  const [status, setStatus] = useState<LighthouseStatus>("idle");
+  const [scores, setScores] = useState<typeof METRICS | null>(null);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [ranAt, setRanAt] = useState<string | null>(null);
+
+  async function run() {
+    setStatus("loading");
+    setErrorMsg("");
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+    try {
+      const targetUrl = window.location.origin + "/";
+      const endpoint =
+        "https://www.googleapis.com/pagespeedonline/v5/runPagespeed" +
+        `?url=${encodeURIComponent(targetUrl)}` +
+        "&category=performance&category=accessibility&category=best-practices&category=seo" +
+        "&strategy=mobile";
+
+      const res = await fetch(endpoint, { signal: controller.signal });
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          throw new Error(
+            "Google's audit API is rate-limited right now — try again in a minute."
+          );
+        }
+        throw new Error("Audit request failed — try again shortly.");
+      }
+
+      const data = await res.json();
+      const cats = data?.lighthouseResult?.categories;
+      if (!cats) throw new Error("Unexpected response from the audit API.");
+
+      const toScore = (v: number | undefined) =>
+        typeof v === "number" ? Math.round(v * 100) : 0;
+
+      setScores([
+        { label: "Performance", value: toScore(cats.performance?.score) },
+        { label: "Accessibility", value: toScore(cats.accessibility?.score) },
+        {
+          label: "Best Practices",
+          value: toScore(cats["best-practices"]?.score),
+        },
+        { label: "SEO", value: toScore(cats.seo?.score) },
+      ]);
+      setRanAt(
+        new Date().toLocaleTimeString(undefined, {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      );
+      setStatus("success");
+    } catch (err) {
+      const aborted = err instanceof DOMException && err.name === "AbortError";
+      setErrorMsg(
+        aborted
+          ? "Audit timed out — Google's servers can be slow on mobile strategy. Try again."
+          : err instanceof Error
+          ? err.message
+          : "Something went wrong running the audit."
+      );
+      setStatus("error");
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  return { status, scores, errorMsg, ranAt, run };
+}
+
+function LighthouseCard() {
+  const { status, scores, errorMsg, ranAt, run } = useLighthouseAudit();
+  const display = scores ?? METRICS;
+
+  return (
+    <ProofCard title="Lighthouse Audit — This Site" className="md:col-span-2">
+      <div className="grid grid-cols-4 gap-3">
+        {display.map((m) => (
+          <div key={m.label} className="text-center">
+            <div className="text-2xl font-bold text-emerald-400">
+              {m.value}
+            </div>
+            <div className="mt-1 text-[10px] text-slate-400">{m.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 flex flex-col items-start gap-2 border-t border-slate-800 pt-3 sm:flex-row sm:items-center sm:justify-between">
+        <span
+          className={`text-[11px] ${
+            status === "error" ? "text-red-400" : "text-slate-500"
+          }`}
+        >
+          {status === "success"
+            ? `Live · Google PSI · ran at ${ranAt}`
+            : status === "error"
+            ? errorMsg
+            : "Static baseline (last manual run) — click to audit this page live"}
+        </span>
+        <button
+          onClick={run}
+          disabled={status === "loading"}
+          className="whitespace-nowrap rounded-lg bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-60"
+        >
+          {status === "loading"
+            ? "Auditing… (~20-30s)"
+            : status === "success"
+            ? "Re-run live audit →"
+            : "Run live audit →"}
+        </button>
+      </div>
+    </ProofCard>
   );
 }
 
@@ -441,7 +689,7 @@ function WaitlistForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="you@company.com"
-        className="w-full flex-1 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-emerald-500 focus:outline-none"
+        className="w-full flex-1 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none"
       />
       <button
         type="submit"
@@ -467,7 +715,7 @@ function WritingCard({ title, url, date }: BlogPost) {
       rel="noopener noreferrer"
       className="flex flex-col gap-2 rounded-2xl border border-slate-800 bg-slate-900/60 p-5 transition hover:border-slate-700"
     >
-      <span className="text-xs font-mono text-slate-500">{date}</span>
+      <span className="text-xs font-mono text-slate-400">{date}</span>
       <h3 className="text-sm font-semibold leading-snug text-slate-100">
         {title}
       </h3>
@@ -620,18 +868,7 @@ export default function HomeClient({ posts }: { posts: BlogPost[] }) {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           {/* lighthouse scores - spans 2, leads because PWA is the current focus */}
-          <ProofCard title="Lighthouse Audit — This Site" className="md:col-span-2">
-            <div className="grid grid-cols-4 gap-3">
-              {METRICS.map((m) => (
-                <div key={m.label} className="text-center">
-                  <div className="text-2xl font-bold text-emerald-400">
-                    {m.value}
-                  </div>
-                  <div className="mt-1 text-[10px] text-slate-500">{m.label}</div>
-                </div>
-              ))}
-            </div>
-          </ProofCard>
+          <LighthouseCard />
 
           {/* PWA */}
           <ProofCard title="PWA Ready">
@@ -660,7 +897,7 @@ export default function HomeClient({ posts }: { posts: BlogPost[] }) {
             >
               Python AML &amp; Fraud Detection Toolkit
             </a>
-            <div className="mt-1 flex items-center justify-between text-xs text-slate-500">
+            <div className="mt-1 flex items-center justify-between text-xs text-slate-400">
               <span>Live on Gumroad</span>
               <a
                 href="https://monsurhabib01.github.io"
