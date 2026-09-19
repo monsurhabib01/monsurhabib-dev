@@ -392,9 +392,11 @@ function ProofCard({
 
 // ---- Live Lighthouse audit -------------------------------------------
 // Calls Google's public PageSpeed Insights API directly from the browser
-// (no server needed — works fine on a static export). No API key = a low
-// shared quota, which is plenty for a personal-portfolio visitor volume;
-// add ?key=YOUR_KEY to the endpoint below if it ever gets rate-limited.
+// (no server needed — works fine on a static export). The unauthenticated
+// quota is shared across the entire internet and is effectively always
+// exhausted (constant 429s) — set NEXT_PUBLIC_PSI_API_KEY (free, restrict
+// it to your domain's HTTP referrers in Google Cloud Console) to get a
+// real per-key quota of 25,000 requests/day.
 type LighthouseStatus = "idle" | "loading" | "success" | "error";
 
 function useLighthouseAudit() {
@@ -411,11 +413,13 @@ function useLighthouseAudit() {
 
     try {
       const targetUrl = window.location.origin + "/";
+      const apiKey = process.env.NEXT_PUBLIC_PSI_API_KEY;
       const endpoint =
         "https://www.googleapis.com/pagespeedonline/v5/runPagespeed" +
         `?url=${encodeURIComponent(targetUrl)}` +
         "&category=performance&category=accessibility&category=best-practices&category=seo" +
-        "&strategy=mobile";
+        "&strategy=mobile" +
+        (apiKey ? `&key=${apiKey}` : "");
 
       const res = await fetch(endpoint, { signal: controller.signal });
 
