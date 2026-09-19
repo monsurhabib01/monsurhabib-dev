@@ -616,7 +616,7 @@ export default function HomeClient({ posts }: { posts: BlogPost[] }) {
       <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-900/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-12 lg:px-20">
           <a href="#" className="text-sm font-bold tracking-tight text-slate-100">
-            Monsur<span className="text-emerald-400">Habib.dev</span>
+            MonsurHabib<span className="text-emerald-400">.dev</span>
           </a>
           <nav className="hidden items-center gap-8 text-sm text-slate-400 sm:flex">
             <a href="#proof" className="transition hover:text-slate-200">
