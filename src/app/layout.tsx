@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description:
       "Building installable PWAs, N8N automations, and secure backend systems. Available for freelance & remote work.",
     url: "https://monsurhabib-dev.vercel.app",
-    siteName: "Monsur.Dev",
+    siteName: "MonsurHabib.Dev",
     type: "website",
   },
 };
