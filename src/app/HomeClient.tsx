@@ -724,7 +724,7 @@ export default function HomeClient({ posts }: { posts: BlogPost[] }) {
           <WorkflowStrip variant={tab} />
           {tab === "pwa" && (
             <a
-              href="https://bus-fare-bd.vercel.app/"
+              href="https://bus-fare-calculator-bd.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400 transition hover:text-emerald-300"
